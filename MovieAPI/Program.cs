@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MovieAPI;
 using MovieAPI.Filters;
+using MovieAPI.APIBehaviour;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ var frontendURL = builder.Configuration.GetValue<string>("frontend_url");
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+//builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -18,7 +19,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add(typeof(MyExceptionFilter));
-});
+    options.Filters.Add(typeof(ParseBadRequest));
+}).ConfigureApiBehaviorOptions(BadRequestBehaviour.Parse);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
