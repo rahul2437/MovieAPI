@@ -33,9 +33,11 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(corsBuilder =>
     {
-        corsBuilder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader();
+        corsBuilder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader().WithExposedHeaders(new string[] { "totalamoutofrecords" });
     });
 });
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 
