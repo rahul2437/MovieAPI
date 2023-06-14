@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MovieAPI;
 using MovieAPI.Filters;
 using MovieAPI.APIBehaviour;
+using MovieAPI.Helpers;
+using MoviesAPI.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +41,10 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+builder.Services.AddScoped<IFileStorageService, AzureStorageService>();
+
+builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,6 +55,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseRouting();
 
