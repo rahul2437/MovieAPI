@@ -18,7 +18,7 @@ namespace MovieAPI.Entities
         
         public DateTime ReleaseDate { get; set; }
         
-        public string Poster { get; set; }
+        public string? Poster { get; set; }
 
         public List<MoviesGenres> MoviesGenres { get; set; }
         
