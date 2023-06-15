@@ -105,6 +105,73 @@ namespace MovieAPI.Controllers
             await context.SaveChangesAsync();
             return movie.Id;
         }
+
+        [HttpGet("putget/{id:int}")]
+        public async Task<ActionResult<MoviePutGetDTO>> PutGet(int id)
+        {
+            var movieActionResult = await Get(id);
+            if(movieActionResult.Result is NotFoundResult)
+            {
+                return NotFound();
+            }
+            var movie = movieActionResult.Value;
+
+            var genresSelectedIds = movie.Genres.Select(x => x.Id).ToList();
+            var nonSelectedGenres = await context.Genres.Where(x => !genresSelectedIds.Contains(x.Id)).ToListAsync();
+        
+            var movieTheatersSelectedIds = movie.MovieTheaters.Select(x => x.Id).ToList();
+            var nonSelectedMovieTHeaters = await context.MoviesTheaters.Where(x => !movieTheatersSelectedIds.Contains(x.Id)).ToListAsync();
+
+            var nonSelectedGenresDTOs = mapper.Map<List<GenreDTO>>(nonSelectedGenres); ;
+            var nonSelectedMovieTheatersDTOs = mapper.Map<List<MovieTheaterDTO>>(nonSelectedMovieTHeaters); ;
+
+            var response = new MoviePutGetDTO();
+            response.Movie = movie;
+            response.SelectedGenres = movie.Genres;
+            response.NonSelectedGenres = nonSelectedGenresDTOs;
+            response.SelectedMovieTheaters = movie.MovieTheaters;
+            response.NonSelectedMovieTheaters = nonSelectedMovieTheatersDTOs;
+            response.Actors = movie.Actors;
+            return response;
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(int id, [FromForm] MovieCreationDTO movieCreationDTO)
+        {
+            var movie = await context.Movies
+                .Include(x => x.MoviesActors)
+                .Include(x => x.MovieTheatersMovies)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (movie==null)
+            {
+                return NotFound();
+            }
+            movie = mapper.Map(movieCreationDTO, movie);
+
+            if (movieCreationDTO.Poster != null)
+            {
+                movie.Poster = await fileStorageService.EditFile(container, movieCreationDTO.Poster, movie.Poster);
+            }
+            AnnotateActorsOrder(movie);
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == id);
+            if(movie==null)
+            {
+                return NotFound();
+            }
+            context.Remove(movie);
+            await context.SaveChangesAsync();
+            await fileStorageService.DeleteFile(movie.Poster, container);
+            return NoContent();
+        }
+
         private void AnnotateActorsOrder(Movie movie)
         {
             if (movie.MoviesActors != null)
