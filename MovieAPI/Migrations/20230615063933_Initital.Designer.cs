@@ -13,8 +13,8 @@ using NetTopologySuite.Geometries;
 namespace MovieAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230614114429_MovieandFriends")]
-    partial class MovieandFriends
+    [Migration("20230615063933_Initital")]
+    partial class Initital
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,7 +88,7 @@ namespace MovieAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RealeaseDate")
+                    b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Summary")
