@@ -22,6 +22,16 @@ namespace MovieAPI.Controllers
             this.context = context;
             this.mapper = mapper;
         }
+
+        [HttpGet("all")]
+        public async Task<ActionResult<List<GenreDTO>>> Get()
+        {
+            var genres = await context.Genres.OrderBy(x=>x.Name).ToListAsync();
+            
+            return mapper.Map<List<GenreDTO>>(genres);
+        }
+
+
         [HttpGet]
         public async Task<ActionResult<List<GenreDTO>>> Get([FromQuery] PaginationDTO paginationDTO)
         {

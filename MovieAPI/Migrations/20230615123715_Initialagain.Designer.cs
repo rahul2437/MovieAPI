@@ -13,8 +13,8 @@ using NetTopologySuite.Geometries;
 namespace MovieAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230615115639_NullablePoster")]
-    partial class NullablePoster
+    [Migration("20230615123715_Initialagain")]
+    partial class Initialagain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,7 @@ namespace MovieAPI.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Poster")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReleaseDate")

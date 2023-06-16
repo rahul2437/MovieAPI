@@ -4,9 +4,9 @@ namespace MovieAPI
 {
     public class FilterMoviesDTO
     {
-        public int Page { get; set; }
-        public int RecordsPerPage { get; set; }
-        public PaginationDTO paginationDTO 
+        public int Page { get; set; } = 1;
+        public int RecordsPerPage { get; set; } = 10;
+        public PaginationDTO? paginationDTO 
         { get
             {
                 return new PaginationDTO()
@@ -16,8 +16,8 @@ namespace MovieAPI
                 };
             } 
         }
-        public string Title { get; set; }
-        public int GenreId { get; set; }
+        public string? Title { get; set; }
+        public int GenreId { get; set; } = 0;
         public bool InTheaters { get; set; }
         public bool UpComingReleases { get; set; }
     }

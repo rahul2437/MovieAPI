@@ -82,6 +82,7 @@ namespace MovieAPI.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Poster")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReleaseDate")

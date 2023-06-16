@@ -7,7 +7,7 @@ using NetTopologySuite.Geometries;
 namespace MovieAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class Initital : Migration
+    public partial class Initialagain : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
